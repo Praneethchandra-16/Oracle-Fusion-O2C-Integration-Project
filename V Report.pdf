@@ -1,0 +1,183 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+<html lang="en-US" dir="ltr">
+  <head>
+    <title>Loading...</title>
+    
+    <script type="text/javascript" language="javascript" src="/xmlpserver/static/v20250324.1035/xdo/jslib/ajax.js"></script>    
+    <script type="text/javascript" language="javascript" src="/xmlpserver/jsconstants.jsp"></script>
+    <script type="text/javascript" language="javascript" src="/xmlpserver/jstrans.jsp"></script>
+    <script language='JavaScript' type='text/JavaScript'>
+    
+		var reportGenerated = 'false';
+		var explicitCancel = 'false'
+		var responseTime = 0;	
+		var unLoadFlag = 'false';
+		var stageCounter = 1;
+		
+        function enableApplyRefresh(){
+	           
+	        var parentDoc = window.parent.document;
+	        if (parentDoc)
+	        {
+		          var applyElem = parentDoc.getElementById('reportViewApply');
+	          if (applyElem)
+	          {
+	            applyElem.disabled = false;
+	            applyElem.setAttribute("class","button");
+	          }
+	          var runRepLink = parentDoc.getElementById('xdo:runReportLink');
+	    	  if (runRepLink)
+	    	  {
+	            runRepLink.disabled = false;
+	            runRepLink.setAttribute("onclick", "return run();");
+	    	  }
+	    	  var refreshIcon = parentDoc.getElementById('refreshViewImg');
+	    	  if (refreshIcon)
+	    	  {
+	    		refreshIcon.setAttribute("src",xdo.constants.IMAGE_BASE_DIR_PATH + "toolbar/refresh_ena.png");
+	    		refreshIcon.setAttribute("onmouseout","this.src='" + xdo.constants.IMAGE_BASE_DIR_PATH + "toolbar/refresh_ena.png'");
+	    		refreshIcon.setAttribute("onmouseover","this.src='" + xdo.constants.IMAGE_BASE_DIR_PATH + "toolbar/refresh_ovr.png'");
+	    		refreshIcon.setAttribute("onmousedown","this.src='" + xdo.constants.IMAGE_BASE_DIR_PATH + "toolbar/refresh_dwn.png'");
+	    		refreshIcon.setAttribute("onmouseup","this.src='" + xdo.constants.IMAGE_BASE_DIR_PATH + "toolbar/refresh_ena.png'");
+	    	  }
+            }
+			
+		}
+                
+	    setTimeout(runStatusCheck,1);
+	        
+		function runStatusCheck() {
+		
+			var url = "/xmlpserver/servlet/xdo?_xdo=%2F%7Ehal.hal%2FVReport.xdo&fromLoadingPage=true&_sTkn=e63b8e091973e91a5b8&_id=8f9e2036-8035-4a88-910b-b5b87dcfa356&_dFlag=false";
+			var req = new Ajax();
+			if(responseTime == 0)
+			{
+				document.getElementById('processDiv').style.display = 'none';
+				document.getElementById('loadSpan').style.display = '';
+			}
+			if(responseTime == 5000)
+			{
+			  document.getElementById('processDiv').style.display = 'block';
+			  document.getElementById('loadSpan').style.display = 'none';
+			}
+			
+			/* Remove stage counter	
+			document.getElementById('stageCounter').innerHTML = RES_STATUS_STAGE.replace('{0}', stageCounter);	
+			stageCounter = stageCounter + 1;
+			*/
+			
+			req.doPost(url, "", function(res){
+			
+	        	res = res.trim();	        
+	        	if (res != "") {
+	        		reportGenerated = 'true'; 
+	        		document.getElementById('message').innerHTML = res;	        		
+			        document.getElementById('finalRequest').value = 'true';    
+			        document.forms['fid'].action = url;
+                    document.forms['fid'].method='POST';				
+			        document.forms['fid'].submit();
+                    //Enable Apply button and refresh Icon
+                    enableApplyRefresh(); 
+                    setDiagnosticsParams();
+                   
+				} else {		
+					
+			    	responseTime = responseTime + 1000;
+			    	
+			    	if (responseTime > 60000) {
+			    		setTimeout(runStatusCheck,20000);			    	
+			    	} else {
+			    		setTimeout(runStatusCheck,1000);			    	
+			    	}
+			 	}
+		  	 return false;		
+		   });	
+	
+	    }
+	    
+	    function handleBeforeUnload() {
+	      if (explicitCancel == 'false') {
+    		return 'Report is running, click to stay on the page or leave the page';
+    	  } 
+	    }
+	    
+	    function handleUnload() {	
+	        if (reportGenerated == 'false' && explicitCancel == 'false')  {        
+	    		var url = '/xmlpserver/servlet/xdo?_xdo=%2F%7Ehal.hal%2FVReport.xdo&fromLoadingPage=true&_sTkn=e63b8e091973e91a5b8&_id=8f9e2036-8035-4a88-910b-b5b87dcfa356&_dFlag=false&_cancel=true';
+	    		var req = new Ajax({async:false});
+	    	    req.doPost(url, "", "");	    		
+	    	} 
+	    }	
+	    function setDiagnosticsParams()
+	    {
+	    	var parentDoc = window.parent.document;                       
+            if (parentDoc.getElementById("_dFlag").value == 'true')
+            {
+            	parentDoc.getElementById("_rToken").value = "8f9e2036-8035-4a88-910b-b5b87dcfa356";
+            	parentDoc.getElementById("_ranDiag").value = 'true';
+            	parentDoc.getElementById("_dFlag").value = 'false';
+            }
+	    }
+	</script>
+  </head>
+
+  <body onbeforeunload="if (reportGenerated == 'false') {return handleBeforeUnload();}" onUnload="return handleUnload();">
+  
+    <form id="fid">
+  
+	<div style='display:block;position:absolute;width: 80%' id='xdoLoading'>
+	  
+    <table width='100%' cellPadding='100' cellSpacing='0' border='0' id='loadingTable' summary='Loading...'>
+	    <tr valign='middle' align='center'><td align='center'>
+			<span id='message'>
+				<div>
+				    <span id="loadSpan" style="display:none" class="fieldText">Loading</span>
+				    </br>
+			    	<img alt='Loading...' border='0' src="/xmlpserver/static/v20250324.1035/theme/alta/images/clock_positive.gif" >
+			    	<div id="processDiv" style="display:none">			
+				    <span class='prompt'>Processing...... To cancel, click</span>
+				    <a href='/xmlpserver/servlet/xdo?_xdo=%2F%7Ehal.hal%2FVReport.xdo&fromLoadingPage=true&_sTkn=e63b8e091973e91a5b8&_id=8f9e2036-8035-4a88-910b-b5b87dcfa356&_dFlag=false&_cancel=true' onclick="explicitCancel='true'; enableApplyRefresh();" class='datalink'>
+				    	here
+				    </a>
+				    <!-- div class='prompt' id="stageCounter"-->										
+				    </div>
+				    </div>
+				</div>
+				
+			</span>
+	    </td></tr>
+    </table>
+           
+	</div>
+	
+	<input type="hidden" id="fromLoadingPage" name="fromLoadingPage" value="true"/>
+    <input type="hidden" id="finalRequest" name="finalRequest" value=""/> 
+  
+  </form>  
+		
+  </body>
+</html>
