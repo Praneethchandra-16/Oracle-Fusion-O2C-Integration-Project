@@ -138,5 +138,5 @@ MS in Business Analytics & AI
 ## 📬 Contact
 
 For collaboration, queries, or suggestions:
-📧 [praneethbudala@gmail.com](mailto:praneethbudala@gmail.com)
+📧 [praneethbudala@gmail.com](mailto:praneethchandrabudala@gmail.com)
 📍 Dallas, TX
