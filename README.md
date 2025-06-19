@@ -131,7 +131,7 @@ Each FBDI file upload is followed by a scheduled process (ESS Job) to push data 
 
 **Praneeth Chandra Budala**
 MS in Business Analytics & AI
-[LinkedIn](https://www.linkedin.com/in/praneethchandra) | [GitHub](https://github.com/Praneethchandra-16)
+[LinkedIn](https://www.linkedin.com/in/praneeth-chandra-budala-6795b8214/) | [GitHub](https://github.com/Praneethchandra-16)
 
 ---
 
