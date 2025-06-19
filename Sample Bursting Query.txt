@@ -1,0 +1,17 @@
+SELECT
+     hp.party_id KEY,
+     'Excel_Template' TEMPLATE,
+     'EXCEL' TEMPLATE_FORMAT,
+     'EXCEL' OUTPUT_FORMAT,
+     'Default' output_name,
+     --AR_Stmt.delivery_method_code DEL_CHANNEL,
+     --'Output 1' output_name,
+     'praneethchandrabudala@gmail.com' PARAMETER1,
+     null   PARAMETER2,
+     'evix.bi.sender@workflow.mail.pp1.oraclecloud.com'  PARAMETER3,
+     'Customer Sales Order bursting - Bursting Test'  PARAMETER4,
+     'Hi '||hp.party_name PARAMETER5,
+     'true' PARAMETER6,
+     'evix.bi.sender@workflow.mail.pp1.oraclecloud.com'  PARAMETER7
+FROM
+  hz_parties hp
